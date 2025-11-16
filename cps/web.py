@@ -25,6 +25,7 @@ import chardet  # dependency of requests
 import copy
 from importlib.metadata import metadata
 
+from . import audio_helper
 from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
 from flask_babel import gettext as _
@@ -1672,3 +1673,18 @@ def show_book(book_id):
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
+
+@web.route("/audio/<int:book_id>/<path:filename>")
+@login_required
+def download_audio(book_id, filename):
+	# haal pad van dit boek op
+	book = calibre_db.get_book(book_id)
+	if not book:
+		abort(404)
+
+	book_path = calibre_db.get_book_path(book.id)  # deze helper bestaat al in Calibre-Web
+	audio_dir = audio_helper.get_audio_dir(book_path)
+	if not audio_dir:
+		abort(404)
+
+	return send_from_directory(audio_dir, filename, as_attachment=True)
