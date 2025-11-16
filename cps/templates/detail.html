@@ -373,5 +373,18 @@
 <script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>
 <script type="text/javascript">
 </script>
+{% if audio_files %}
+<h3>Audio</h3>
+<ul>
+	{% for f in audio_files %}
+	<li>
+		<a href="{{ url_for('download_audio', book_id=book.id, filename=f) }}">
+			{{ f }}
+		</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endif %}
 
+    
 {% endblock %}
