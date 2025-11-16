@@ -1636,8 +1636,8 @@ def show_book(book_id):
         entry.read_status = read_book == ub.ReadBook.STATUS_FINISHED
         entry.is_archived = archived_book
         book = calibre_db.get_book(book_id)
-	    book_path = calibre_db.get_book_path(book.id)
-	    audio_files = audio_helper.get_audio_files(book_path)
+        book_path = calibre_db.get_book_path(book.id)
+        audio_files = audio_helper.get_audio_files(book_path)
 
         for lang_index in range(0, len(entry.languages)):
             entry.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
